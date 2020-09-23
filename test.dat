@@ -1,0 +1,57 @@
+# Spacecraft data
+# <- Comment line
+# Do not change order of variables!
+
+# orbit height
+1
+
+# earth orbit
+2
+
+# space craft sun distance
+3
+
+# elongation angle
+4
+
+# space antenna diameter
+5
+
+# ground antenna diameter
+6
+
+# space pointing offset
+7
+
+# ground pointing offset
+8
+
+# antenna efficiency
+9
+
+# system noise temp
+10
+
+# tx power
+11
+
+# tx path loss
+12
+
+# tx loss factor
+13
+
+# rx loss factor
+14
+
+# duty cycle
+15
+
+# signal frequency
+16
+
+# downlink time ratio
+17
+
+# generated data rate
+18
