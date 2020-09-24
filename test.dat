@@ -2,68 +2,77 @@
 # <- Comment line
 # Do not change order of variables!
 
-# orbit height
+# orbit altitude [m]
+570E3
+
+# earth orbit (0=FALSE,1=TRUE)
 1
 
-# earth orbit
-2
-
 # space craft sun distance
-3
+0
 
 # elongation angle
-4
+0
 
-# space antenna diameter
-5
+# space antenna diameter [m]
+0.5
 
-# ground antenna diameter
-6
-
-# space pointing offset
-7
-
-# ground pointing offset
-8
-
-# antenna efficiency
-9
-
-# system noise temp
+# ground antenna diameter [m]
 10
 
-# tx power
-11
+# space pointing offset [deg]
+0.25
 
-# tx path loss
-12
+# ground pointing offset [deg]
+0
 
-# tx loss factor
-13
+# antenna efficiency [-]
+0.55
 
-# rx loss factor
-14
+# system noise temp [degC]
+135
+
+# system noise temp given? (0=FALSE,1=TRUE)
+1
+
+# tx power [W]
+2
+
+# tx path loss [-]
+-0.5
+
+# tx loss factor [-]
+-0.97
+
+# rx loss factor [-]
+-0.97
 
 # duty cycle
-15
+0.5
 
-# signal frequency
-16
+# signal frequency [Hz]
+2.5E9
 
 # downlink time ratio
-17
+0.083
 
-# generated data rate
-18
+# generated data rate [bit/s]
+1E6
+
+# generated data rate given? (0=FALSE,1=TRUE)
+1
 
 # pixel size
-19
+0
 
 # velocity
-20
+0
 
 # swath width
-21
+0
 
 # bits per pixel
-22
+0
+
+# required SNR [dB]
+10
