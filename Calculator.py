@@ -23,6 +23,11 @@ def pointing_loss(signal_frequency, space_antenna_diameter, ground_antenna_diame
     return pointing_loss_transmitter + pointing_loss_reciever
 
 
+def antenna_gain(space_antenna_diameter, ground_antenna_diameter, signal_frequency, antenna_efficiency):
+    wavelength = c / signal_frequency
+    transmitter_gain = 20 * np.log10(space_antenna_diameter) + 20 * np.log10(signal_frequency) + 17.8
+    reciever_gain = ((np.pi ** 2) * (ground_antenna_diameter ** 2))/(wavelength ** 2) * antenna_efficiency
+    return transmitter_gain, reciever_gain
 
 
 # print(space_loss(True, 570000, 0, 0, 2.5e9))
