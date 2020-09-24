@@ -7,6 +7,7 @@ def print_help():
           "LOAD file [slot] > load new input file [optionally at given slot, else at new slot]\n"
           "RUN [slot] > run all slots or given slot\n"
           "SHOW [slot] > show all slots or given slot\n"
+          "NAME slot name > change the name of a slot\n"          
           "CLEAR [slot] > clear all slots or given slot\n"
           "EXIT > exit the program\n"
           "HELP > show commands\n")
@@ -46,8 +47,23 @@ while True:
                     print("Data slot " + str(data_slot_i + 1) + ": " + data_slot.name)
                     data_slot.print_values()
         if len(command) == 2:
-            print("Data slot " + command[1] + ": " + data_slots[int(command[1])-1].name)
-            data_slots[int(command[1]) - 1].print_values()
+            try:
+                print("Data slot " + command[1] + ": " + data_slots[int(command[1])-1].name)
+                data_slots[int(command[1]) - 1].print_values()
+            except IndexError:
+                print("Slot does not exist yet")
+
+    elif command[0].upper() == 'NAME':
+        if len(command) == 3:
+            try:
+                if data_slots[int(command[1])-1] is None:
+                    raise IndexError
+                data_slots[int(command[1])-1].name = command[2]
+                print(f"changed name of slot {command[1]} to {data_slots[int(command[1])-1].name}")
+            except IndexError:
+                print("Slot does not exist yet")
+        else:
+            print("Please fill in a slot and a new name.")
 
     elif command[0].upper() == 'RUN':
         if len(command) == 1:
@@ -57,11 +73,14 @@ while True:
                     print(f"Data slot {str(data_slot_i + 1)}, {data_slot.name}\n\tReceived SNR: {str(data_slot.output):4.4} [dB]\n\tRequired SNR:"
                           f" {str(data_slot.required_snr):4.4} [dB]\n\tMargin: {str(data_slot.output - data_slot.required_snr):4.4} [dB]")
         elif len(command) == 2:
-            if data_slots[int(command[1])-1] is not None:
-                data_slots[int(command[1])-1].output = get_received_snr(data_slots[int(command[1])-1])
-                print(f"Data slot {command[1]}, {data_slots[int(command[1])-1].name}\n\tReceived SNR:"
-                      f" {str(data_slots[int(command[1])-1].output):4.4} [dB]\n\tRequired SNR:"
-                      f" {str(data_slots[int(command[1])-1].required_snr):4.4} [dB]\n\tMargin: {str(data_slots[int(command[1])-1].output - data_slots[int(command[1])-1].required_snr):4.4} [dB]")
+            try:
+                if data_slots[int(command[1])-1] is not None:
+                    data_slots[int(command[1])-1].output = get_received_snr(data_slots[int(command[1])-1])
+                    print(f"Data slot {command[1]}, {data_slots[int(command[1])-1].name}\n\tReceived SNR:"
+                          f" {str(data_slots[int(command[1])-1].output):4.4} [dB]\n\tRequired SNR:"
+                          f" {str(data_slots[int(command[1])-1].required_snr):4.4} [dB]\n\tMargin: {str(data_slots[int(command[1])-1].output - data_slots[int(command[1])-1].required_snr):4.4} [dB]")
+            except IndexError:
+                print("Slot does not exist yet")
 
     elif command[0].upper() == 'CLEAR':
         if len(command) == 1:
