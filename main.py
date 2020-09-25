@@ -49,7 +49,7 @@ while True:
         if len(command) == 1:
             for data_slot_i, data_slot in enumerate(data_slots):
                 if data_slot is not None:
-                    print("Data slot " + str(data_slot_i + 1) + ": " + data_slot.name)
+                    print("\nData slot " + str(data_slot_i + 1) + ": " + data_slot.name)
                     data_slot.print_values()
         if len(command) == 2:
             try:
@@ -82,10 +82,19 @@ while True:
                     data_slots.append(None)
                 data_slots[int(command[2]) - 1] = data_slots[int(command[1]) - 1]
                 data_slots[int(command[1]) - 1] = None
-                print(data_slots)
             except ValueError:
                 print("ERROR: slot should be integer.")
-            
+        else:
+            print("Please fill in an old and new slot.")
+
+    elif command[0].upper() == 'COPY':
+        if len(command) == 3:
+            try:
+                while len(data_slots) < int(command[2]):
+                    data_slots.append(None)
+                data_slots[int(command[2]) - 1] = data_slots[int(command[1]) - 1]
+            except ValueError:
+                print("ERROR: slot should be integer.")
         else:
             print("Please fill in an old and new slot.")
 
