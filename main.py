@@ -1,5 +1,6 @@
 from data_management import Data
 from calculator import get_received_snr
+import copy
 
 
 def print_help():
@@ -10,7 +11,7 @@ def print_help():
           "CHANGE slot id value\t> changes the value of the given id of the given slot\n"
           "MOVE old_slot new_slot\t> moves the old slot to the new slot\n"
           "COPY old_slot new_slot\t> copies the old slot to the new slot\n"
-          "NAME slot name\t\t> change the name of a slot\n"          
+          "NAME slot name\t\t> change the name of a slot\n"
           "CLEAR [slot]\t\t> clear all slots or given slot\n"
           "EXIT\t\t\t> exit the program\n"
           "HELP\t\t\t> show commands\n")
@@ -35,12 +36,12 @@ while True:
             pass
         elif len(command) == 2:
             data_slots.append(data)
-            print(f'File loaded at slot {data_slots.index(data)+1}')
+            print(f'File loaded at slot {data_slots.index(data) + 1}')
         elif len(command) == 3:
             try:
                 while len(data_slots) < int(command[2]):
                     data_slots.append(None)
-                data_slots[int(command[2])-1] = data
+                data_slots[int(command[2]) - 1] = data
                 print(f'File loaded at slot {data_slots.index(data) + 1}')
             except ValueError:
                 print("ERROR: slot should be integer.")
@@ -53,9 +54,9 @@ while True:
                     data_slot.print_values()
         if len(command) == 2:
             try:
-                print("Data slot " + command[1] + ": " + data_slots[int(command[1])-1].name)
+                print("Data slot " + command[1] + ": " + data_slots[int(command[1]) - 1].name)
                 data_slots[int(command[1]) - 1].print_values()
-            except IndexError:
+            except (IndexError, AttributeError):
                 print("Slot does not exist yet.")
             except ValueError:
                 print("ERROR: slot should be integer.")
@@ -66,9 +67,9 @@ while True:
                 values = data_slots[int(command[1]) - 1].get_values()
                 values[int(command[2]) - 1] = float(command[3])
                 data_slots[int(command[1]) - 1].set_values(values)
-                print("New values for data slot " + command[1] + ": " + data_slots[int(command[1])-1].name)
+                print("New values for data slot " + command[1] + ": " + data_slots[int(command[1]) - 1].name)
                 data_slots[int(command[1]) - 1].print_values()
-            except IndexError:
+            except (IndexError, AttributeError):
                 print("Slot or ID does not exist.")
             except ValueError:
                 print("ERROR: slot should be integer.")
@@ -84,6 +85,8 @@ while True:
                 data_slots[int(command[1]) - 1] = None
             except ValueError:
                 print("ERROR: slot should be integer.")
+            except (IndexError, AttributeError):
+                print("Slot or ID does not exist.")
         else:
             print("Please fill in an old and new slot.")
 
@@ -92,20 +95,22 @@ while True:
             try:
                 while len(data_slots) < int(command[2]):
                     data_slots.append(None)
-                data_slots[int(command[2]) - 1] = data_slots[int(command[1]) - 1]
+                data_slots[int(command[2]) - 1] = copy.deepcopy(data_slots[int(command[1]) - 1])
             except ValueError:
                 print("ERROR: slot should be integer.")
+            except (IndexError, AttributeError):
+                print("Slot or ID does not exist.")
         else:
             print("Please fill in an old and new slot.")
 
     elif command[0].upper() == 'NAME':
         if len(command) >= 3:
             try:
-                if data_slots[int(command[1])-1] is None:
+                if data_slots[int(command[1]) - 1] is None:
                     raise IndexError
                 name = ' '.join(command[2:(len(command))])
-                data_slots[int(command[1])-1].name = name
-                print(f"changed name of slot {command[1]} to {data_slots[int(command[1])-1].name}")
+                data_slots[int(command[1]) - 1].name = name
+                print(f"changed name of slot {command[1]} to {data_slots[int(command[1]) - 1].name}")
             except IndexError:
                 print("Slot does not exist yet.")
             except ValueError:
@@ -122,11 +127,11 @@ while True:
                           f" {str(data_slot.required_snr):4.4} [dB]\n\tMargin: {str(data_slot.output - data_slot.required_snr):4.4} [dB]")
         elif len(command) == 2:
             try:
-                if data_slots[int(command[1])-1] is not None:
-                    data_slots[int(command[1])-1].output = get_received_snr(data_slots[int(command[1])-1])
-                    print(f"Data slot {command[1]}, {data_slots[int(command[1])-1].name}\n\tReceived SNR:"
-                          f" {str(data_slots[int(command[1])-1].output):4.4} [dB]\n\tRequired SNR:"
-                          f" {str(data_slots[int(command[1])-1].required_snr):4.4} [dB]\n\tMargin: {str(data_slots[int(command[1])-1].output - data_slots[int(command[1])-1].required_snr):4.4} [dB]")
+                if data_slots[int(command[1]) - 1] is not None:
+                    data_slots[int(command[1]) - 1].output = get_received_snr(data_slots[int(command[1]) - 1])
+                    print(f"Data slot {command[1]}, {data_slots[int(command[1]) - 1].name}\n\tReceived SNR:"
+                          f" {str(data_slots[int(command[1]) - 1].output):4.4} [dB]\n\tRequired SNR:"
+                          f" {str(data_slots[int(command[1]) - 1].required_snr):4.4} [dB]\n\tMargin: {str(data_slots[int(command[1]) - 1].output - data_slots[int(command[1]) - 1].required_snr):4.4} [dB]")
             except IndexError:
                 print("Slot does not exist yet")
             except ValueError:
@@ -139,7 +144,7 @@ while True:
             print("All slots cleared")
         elif len(command) == 2:
             try:
-                data_slots[int(command[1])-1] = None
+                data_slots[int(command[1]) - 1] = None
                 print(f"Slot {command[1]} cleared")
             except ValueError:
                 print("ERROR: slot should be integer.")
@@ -153,3 +158,5 @@ while True:
     else:
         print("ERROR: Command not found")
 
+    while data_slots[-1] is None and len(data_slots) > 1:
+        data_slots.pop(-1)

@@ -62,7 +62,7 @@
 # generated data rate given? (0=FALSE,1=TRUE)
 1
 
-# pixel size
+# pixel size (deg)
 0
 
 # velocity
